@@ -1,0 +1,110 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model PaymentMethod {
+  id                  Int               @id @default(autoincrement())
+  name                String
+  payment_method_type PaymentMethodType
+  created_at          DateTime          @default(now())
+
+  PaymentAccount PaymentAccount[]
+}
+
+model PaymentAccount {
+  id                     BigInt   @id @default(autoincrement())
+  user_id                String   @db.Uuid
+  payment_account_number String   @unique
+  payment_method_id      Int
+  currency               String
+  created_at             DateTime @default(now())
+  updated_at             DateTime @default(now())
+
+  PaymentHistory   PaymentHistory[]
+  PaymentMethod    PaymentMethod      @relation(fields: [payment_method_id], references: [id])
+  Transaction      Transaction[]
+  RecurringPayment RecurringPayment[]
+}
+
+model PaymentHistory {
+  id               BigInt               @id
+  account_id       BigInt
+  transaction_id   BigInt
+  amount           Decimal
+  transaction_type TransactionType
+  status           PaymentHistoryStatus @default(PENDING)
+  created_at       DateTime             @default(now())
+
+  PaymentAccount PaymentAccount @relation(fields: [account_id], references: [id])
+  Transaction    Transaction    @relation(fields: [transaction_id], references: [id])
+}
+
+model Transaction {
+  id               BigInt            @id
+  account_id       BigInt
+  amount           Decimal
+  currency         String
+  transaction_type TransactionType
+  status           TransactionStatus @default(PENDING)
+  created_at       DateTime          @default(now())
+  updated_at       DateTime          @default(now())
+
+  PaymentHistory PaymentHistory[]
+  Account        PaymentAccount   @relation(fields: [account_id], references: [id])
+}
+
+model RecurringPayment {
+  id                BigInt                 @id
+  account_id        BigInt
+  amount            Decimal
+  currency          String
+  frequency         String
+  next_payment_date DateTime
+  status            RecurringPaymentStatus @default(ACTIVE)
+  created_at        DateTime               @default(now())
+  updated_at        DateTime               @default(now())
+
+  Account PaymentAccount @relation(fields: [account_id], references: [id])
+}
+
+enum PaymentMethodType {
+  CARD
+  WALLET
+}
+
+enum PaymentHistoryStatus {
+  COMPLETED
+  FAILED
+  PENDING
+  REVERSED
+}
+
+enum TransactionStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+  CANCELLED
+  REJECTED
+  REVERSED
+}
+
+enum RecurringPaymentStatus {
+  ACTIVE
+  PAUSED
+  CANCELLED
+  COMPLETED
+  FAILED
+  PENDING_APPROVAL
+}
+
+enum TransactionType {
+  SEND
+  WITHDRAW
+}
