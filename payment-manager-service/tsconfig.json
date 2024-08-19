@@ -15,7 +15,6 @@
     "skipLibCheck": true,
     "lib": ["ESNext"],
 
-    "rootDir": "./src",
     "outDir": "./build"
   }
 }

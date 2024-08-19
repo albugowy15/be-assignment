@@ -17,7 +17,7 @@ export const schema = {
   properties: {
     APP_PORT: {
       type: "number",
-      default: 8000,
+      default: 3001,
     },
     DATABASE_URL: {
       type: "string",

@@ -6,7 +6,7 @@ import v1Routes from "./presentation/routes/v1";
 import { AppError } from "./utils/error";
 import bootstrapAppPlugin from "./plugins/bootstrap-app-plugin";
 
-const app = Fastify();
+const app = Fastify({ logger: true });
 
 app
   .register(fastifyEnv, options)
@@ -17,10 +17,13 @@ app
         .send({ status: "error", error: error.message });
     }
     request.log.error(error.message);
-    reply.send(error);
+    reply.code(500).send({ status: "error", error: "Internal server error" });
+  })
+  .setNotFoundHandler((_request, reply) => {
+    reply.code(404).send({ status: "error", error: "Route not found" });
   })
   .register(middie, { hook: "preHandler" })
   .register(bootstrapAppPlugin)
-  .register(v1Routes, { prefix: "/v1/account" });
+  .register(v1Routes, { prefix: "/v1" });
 
 export default app;

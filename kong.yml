@@ -1,0 +1,31 @@
+_format_version: "3.0"
+_transform: true
+
+services:
+  - host: httpbin.org
+    name: example_service
+    port: 80
+    protocol: http
+    routes:
+      - name: example_route
+        paths:
+          - /mock
+        strip_path: true
+  - host: account-manager-service
+    name: account_manager_service
+    port: 3000
+    protocol: http
+    routes:
+      - name: account_route
+        paths:
+          - /account
+        strip_path: true
+  - host: payment-manager-service
+    name: payment_manager_service
+    port: 3001
+    protocol: http
+    routes:
+      - name: payment_route
+        paths:
+          - /payment
+        strip_path: true
