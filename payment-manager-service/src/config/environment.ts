@@ -6,8 +6,6 @@ declare module "fastify" {
       APP_PORT: number;
       DATABASE_URL: string;
       DIRECT_URL: string;
-      SUPABASE_KEY: string;
-      SUPABASE_URL: string;
       SUPABASE_JWT_SECRET: string;
     };
   }
@@ -15,14 +13,7 @@ declare module "fastify" {
 
 export const schema = {
   type: "object",
-  required: [
-    "APP_PORT",
-    "DATABASE_URL",
-    "DIRECT_URL",
-    "SUPABASE_KEY",
-    "SUPABASE_URL",
-    "SUPABASE_JWT_SECRET",
-  ],
+  required: ["APP_PORT", "DATABASE_URL", "DIRECT_URL", "SUPABASE_JWT_SECRET"],
   properties: {
     APP_PORT: {
       type: "number",
@@ -32,12 +23,6 @@ export const schema = {
       type: "string",
     },
     DIRECT_URL: {
-      type: "string",
-    },
-    SUPABASE_KEY: {
-      type: "string",
-    },
-    SUPABASE_URL: {
       type: "string",
     },
     SUPABASE_JWT_SECRET: {
