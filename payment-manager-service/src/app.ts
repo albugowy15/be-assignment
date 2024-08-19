@@ -19,8 +19,11 @@ app
     request.log.error(error.message);
     reply.send(error);
   })
+  .setNotFoundHandler((_request, reply) => {
+    reply.code(404).send({ status: "error", error: "Route not found" });
+  })
   .register(middie, { hook: "preHandler" })
   .register(bootstrapAppPlugin)
-  .register(v1Routes, { prefix: "/v1/account" });
+  .register(v1Routes, { prefix: "/v1/payment" });
 
 export default app;

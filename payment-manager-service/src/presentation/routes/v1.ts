@@ -1,13 +1,9 @@
 import { FastifyPluginAsync } from "fastify";
-import authController from "../controllers/auth";
-import transactionsController from "../controllers/transactions";
-import accountsController from "../controllers/accounts";
+import paymentsController from "../controllers/payments";
 import jwt from "@fastify/jwt";
 
 const v1Routes: FastifyPluginAsync = async function (fastify, _opts) {
-  fastify
-    .register(authController, { prefix: "/auth" })
-    .register(protectedRoutes);
+  fastify.register(protectedRoutes);
 };
 
 const protectedRoutes: FastifyPluginAsync = async function (fastify, _opts) {
@@ -30,8 +26,7 @@ const protectedRoutes: FastifyPluginAsync = async function (fastify, _opts) {
         reply.code(403).send({ status: "error", error: "invalid jwt token" });
       }
     })
-    .register(accountsController, { prefix: "/accounts" })
-    .register(transactionsController, { prefix: "/transactions" });
+    .register(paymentsController, { prefix: "/payments" });
 };
 
 export default v1Routes;
