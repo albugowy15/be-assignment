@@ -41,10 +41,6 @@ app
           url: "http://localhost:3001",
           description: "Service server",
         },
-        {
-          url: "http://localhost:8000/payment",
-          description: "Gateway server",
-        },
       ],
       components: {
         securitySchemes: {

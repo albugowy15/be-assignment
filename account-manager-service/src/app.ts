@@ -43,10 +43,6 @@ app
           url: "http://localhost:3000",
           description: "Service server",
         },
-        {
-          url: "http://localhost:8000/account",
-          description: "Gateway server",
-        },
       ],
       components: {
         securitySchemes: {
