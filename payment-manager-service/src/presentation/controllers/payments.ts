@@ -39,7 +39,7 @@ const paymentsController: FastifyPluginAsync = async (fastify, _opts) => {
         request.body,
         claim.id,
       );
-      reply.status(201).send({ status: "success", data: res });
+      return reply.code(201).send({ status: "success", data: res });
     },
   );
   app.post(
@@ -72,7 +72,7 @@ const paymentsController: FastifyPluginAsync = async (fastify, _opts) => {
         request.body,
         claim.id,
       );
-      reply.status(201).send({ status: "success", data: res });
+      return reply.code(201).send({ status: "success", data: res });
     },
   );
 };

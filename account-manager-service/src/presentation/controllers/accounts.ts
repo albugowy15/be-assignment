@@ -40,7 +40,7 @@ const accountsController: FastifyPluginAsync = async (
     async function (request, reply) {
       const claims = claimToken(request);
       const res = await route.accountUseCase.create(request.body, claims.id);
-      reply.code(201).send({ status: "success", data: res });
+      return reply.code(201).send({ status: "success", data: res });
     },
   );
 
@@ -68,7 +68,7 @@ const accountsController: FastifyPluginAsync = async (
       const res = await route.accountUseCase.getTransactionsByAccountId(
         request.params.id,
       );
-      reply.code(200).send({ status: "success", data: res });
+      return reply.code(200).send({ status: "success", data: res });
     },
   );
 
@@ -94,7 +94,7 @@ const accountsController: FastifyPluginAsync = async (
     async function (request, reply) {
       const claims = claimToken(request);
       const res = await route.accountUseCase.getByUserId(claims.id);
-      reply.code(200).send({ status: "success", data: res });
+      return reply.code(200).send({ status: "success", data: res });
     },
   );
 
@@ -128,7 +128,7 @@ const accountsController: FastifyPluginAsync = async (
         request.body,
         claims.id,
       );
-      reply.code(200).send({ status: "success", data: res });
+      return reply.code(200).send({ status: "success", data: res });
     },
   );
 
@@ -161,7 +161,7 @@ const accountsController: FastifyPluginAsync = async (
         request.params.id,
         claims.id,
       );
-      reply.code(200).send({ status: "success", data: res });
+      return reply.code(200).send({ status: "success", data: res });
     },
   );
 };

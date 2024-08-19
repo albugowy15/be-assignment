@@ -29,7 +29,7 @@ const authController: FastifyPluginAsync = async (
     },
     async function (request, reply) {
       const res = await route.authUseCase.login(request.body);
-      reply.code(200).send({
+      return reply.code(200).send({
         status: "success",
         data: {
           id: res.user.id,
@@ -59,7 +59,7 @@ const authController: FastifyPluginAsync = async (
     },
     async function (request, reply) {
       const res = await route.authUseCase.registerUser(request.body);
-      reply.code(201).send({ status: "success", data: { id: res.id } });
+      return reply.code(201).send({ status: "success", data: { id: res.id } });
     },
   );
 };

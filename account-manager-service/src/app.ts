@@ -13,16 +13,21 @@ const app = Fastify({ logger: true });
 app
   .register(fastifyEnv, options)
   .setErrorHandler((error, request, reply) => {
+    if (error.validation) {
+      return reply.status(400).send({ status: "error", error: error.message });
+    }
     if (error instanceof AppError) {
-      reply
+      return reply
         .status(error.statusCode)
         .send({ status: "error", error: error.message });
     }
     request.log.error(error.message);
-    reply.code(500).send({ status: "error", error: "Internal server error" });
+    return reply
+      .code(500)
+      .send({ status: "error", error: "Internal server error" });
   })
   .setNotFoundHandler((_request, reply) => {
-    reply.code(404).send({ status: "error", error: "Route not found" });
+    return reply.code(404).send({ status: "error", error: "Route not found" });
   })
   .register(swagger, {
     openapi: {
