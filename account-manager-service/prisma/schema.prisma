@@ -60,15 +60,14 @@ model Transaction {
 }
 
 model RecurringPayment {
-  id                Int                    @id @default(autoincrement())
-  account_id        Int
-  amount            Decimal
-  currency          String
-  frequency         String
-  next_payment_date DateTime
-  status            RecurringPaymentStatus @default(ACTIVE)
-  created_at        DateTime               @default(now())
-  updated_at        DateTime               @default(now())
+  id         Int                      @id @default(autoincrement())
+  account_id Int
+  amount     Decimal
+  currency   String
+  interval   RecurringPaymentInterval
+  status     RecurringPaymentStatus   @default(ACTIVE)
+  created_at DateTime                 @default(now())
+  updated_at DateTime                 @default(now())
 
   Account PaymentAccount @relation(fields: [account_id], references: [id])
 }
@@ -107,4 +106,11 @@ enum RecurringPaymentStatus {
 enum TransactionType {
   SEND
   WITHDRAW
+}
+
+enum RecurringPaymentInterval {
+  DAILY
+  WEEKLY
+  MONTHLY
+  ANNUALLY
 }

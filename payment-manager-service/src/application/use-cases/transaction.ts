@@ -2,26 +2,31 @@ import { Decimal } from "@prisma/client/runtime/library";
 import AccountRepository from "../../infrastructure/repositories/account";
 import TransactionRepository from "../../infrastructure/repositories/transaction";
 import {
+  PaymentRecurringReq,
   PaymentSendReq,
   PaymentWithdrawReq,
 } from "../../presentation/schemas/payment";
 import { AppError } from "../../utils/error";
 import PaymentHistoryRepository from "../../infrastructure/repositories/payment-history";
 import { PrismaClient } from "@prisma/client";
+import RecurringPaymentRepository from "../../infrastructure/repositories/recurring-payment";
 
 class TransactionUseCase {
   private transactionRepository: TransactionRepository;
   private accountRepository: AccountRepository;
   private paymentHistoryRepository: PaymentHistoryRepository;
+  private recurringPaymentRepository: RecurringPaymentRepository;
 
   constructor(
     transactionRepository: TransactionRepository,
     accountRepository: AccountRepository,
     paymentHistoryRepository: PaymentHistoryRepository,
+    recurringPaymentRepository: RecurringPaymentRepository,
   ) {
     this.transactionRepository = transactionRepository;
     this.accountRepository = accountRepository;
     this.paymentHistoryRepository = paymentHistoryRepository;
+    this.recurringPaymentRepository = recurringPaymentRepository;
   }
 
   public async getByUserId(userId: string) {
@@ -132,6 +137,40 @@ class TransactionUseCase {
       throw new AppError(500, "Failed create transaction");
     }
     // done
+  }
+
+  public async recurringPaymentFromUser(
+    req: PaymentRecurringReq,
+    userId: string,
+  ) {
+    // validate account id
+    const checkAccount = await this.accountRepository.findById(req.account_id);
+    if (checkAccount === null) {
+      throw new AppError(400, "Account id not found");
+    }
+    // validate account id is belong to current user
+    const accountBelongToUser = await this.accountRepository.findByIdAndUserId(
+      req.account_id,
+      userId,
+    );
+    if (accountBelongToUser === null) {
+      throw new AppError(400, "Account not found");
+    }
+
+    // insert to RecurringPayment
+    try {
+      const decimalAmount = new Decimal(req.amount);
+      const result = await this.recurringPaymentRepository.create({
+        account_id: req.account_id,
+        interval: req.interval,
+        currency: req.currency,
+        amount: decimalAmount,
+      });
+      return result;
+    } catch (error) {
+      console.error(error);
+      throw new AppError(500, "Internal server error");
+    }
   }
 }
 

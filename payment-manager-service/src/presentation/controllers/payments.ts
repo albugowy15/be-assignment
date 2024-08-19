@@ -1,6 +1,7 @@
 import { Type, TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
 import { FastifyPluginAsync } from "fastify";
 import {
+  PaymentRecurringSchemaReq,
   PaymentSendSchemaReq,
   PaymentWithdrawSchemaReq,
 } from "../schemas/payment";
@@ -71,6 +72,32 @@ const paymentsController: FastifyPluginAsync = async (fastify, _opts) => {
         app.db,
         request.body,
         claim.id,
+      );
+      return reply.code(201).send({ status: "success", data: res });
+    },
+  );
+  app.post(
+    "/recurring",
+    {
+      schema: {
+        description: "Create recurring payment",
+        tags: ["payment"],
+        body: PaymentRecurringSchemaReq,
+        response: {
+          201: Type.Object({
+            status: Type.String(),
+            data: Type.Object({
+              id: Type.Number(),
+            }),
+          }),
+        },
+      },
+    },
+    async function (request, reply) {
+      const claims = claimToken(request);
+      const res = await app.transactionUseCase.recurringPaymentFromUser(
+        request.body,
+        claims.id,
       );
       return reply.code(201).send({ status: "success", data: res });
     },

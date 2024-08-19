@@ -5,6 +5,7 @@ import TransactionUseCase from "../application/use-cases/transaction";
 import TransactionRepository from "../infrastructure/repositories/transaction";
 import AccountRepository from "../infrastructure/repositories/account";
 import PaymentHistoryRepository from "../infrastructure/repositories/payment-history";
+import RecurringPaymentRepository from "../infrastructure/repositories/recurring-payment";
 
 declare module "fastify" {
   interface FastifyInstance {
@@ -19,11 +20,13 @@ const bootstrapAppPlugin: FastifyPluginAsync = fp(async (server, _opts) => {
   const accountRepository = new AccountRepository(db);
   const transactionRepository = new TransactionRepository(db);
   const paymentHistoryRepository = new PaymentHistoryRepository(db);
+  const recurringPaymentRepository = new RecurringPaymentRepository(db);
 
   const transactionUseCase = new TransactionUseCase(
     transactionRepository,
     accountRepository,
     paymentHistoryRepository,
+    recurringPaymentRepository,
   );
 
   server.decorate("transactionUseCase", transactionUseCase);
