@@ -1,4 +1,4 @@
-import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
+import { Type, TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
 import { FastifyPluginAsync } from "fastify";
 import {
   PaymentSendSchemaReq,
@@ -13,7 +13,23 @@ const paymentsController: FastifyPluginAsync = async (fastify, _opts) => {
     "/send",
     {
       schema: {
+        description: "Create send payment",
+        tags: ["payment"],
         body: PaymentSendSchemaReq,
+        response: {
+          201: Type.Object({
+            status: Type.String(),
+            data: Type.Object({
+              transaction_id: Type.Number(),
+              payment_history_id: Type.Number(),
+            }),
+          }),
+        },
+        security: [
+          {
+            bearerAuth: [],
+          },
+        ],
       },
     },
     async function (request, reply) {
@@ -30,7 +46,23 @@ const paymentsController: FastifyPluginAsync = async (fastify, _opts) => {
     "/withdraw",
     {
       schema: {
+        description: "Create withdraw payment",
+        tags: ["payment"],
         body: PaymentWithdrawSchemaReq,
+        response: {
+          201: Type.Object({
+            status: Type.String(),
+            data: Type.Object({
+              transaction_id: Type.Number(),
+              payment_history_id: Type.Number(),
+            }),
+          }),
+        },
+        security: [
+          {
+            bearerAuth: [],
+          },
+        ],
       },
     },
     async function (request, reply) {

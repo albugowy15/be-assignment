@@ -44,7 +44,7 @@ class TransactionUseCase {
       userId,
     );
     if (accountBelongToUser === null) {
-      throw new AppError(403, "This account is not belong to current user");
+      throw new AppError(400, "Account not found");
     }
     try {
       const amountDecimal = new Decimal(req.amount);
@@ -96,7 +96,7 @@ class TransactionUseCase {
       userId,
     );
     if (accountBelongToUser === null) {
-      throw new AppError(403, "This account is not belong to current user");
+      throw new AppError(400, "Account not found");
     }
     try {
       const amountDecimal = new Decimal(req.amount);
