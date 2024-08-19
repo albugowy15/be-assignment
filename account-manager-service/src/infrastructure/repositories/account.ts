@@ -1,0 +1,35 @@
+import { PaymentAccount, PrismaClient } from "@prisma/client";
+
+class AccountRepository {
+  private db: PrismaClient;
+  constructor(db: PrismaClient) {
+    this.db = db;
+  }
+
+  public async create(
+    value: Pick<
+      PaymentAccount,
+      "payment_account_number" | "currency" | "user_id" | "payment_method_id"
+    >,
+  ) {
+    await this.db.paymentAccount.create({
+      data: {
+        ...value,
+      },
+    });
+  }
+
+  public async findByUserId(userId: string) {
+    return await this.db.paymentAccount.findMany({
+      where: { user_id: userId },
+    });
+  }
+
+  public async findByAccountNumber(accountNumber: string) {
+    return await this.db.paymentAccount.findFirst({
+      where: { payment_account_number: accountNumber },
+    });
+  }
+}
+
+export default AccountRepository;

@@ -18,7 +18,7 @@ model PaymentMethod {
 }
 
 model PaymentAccount {
-  id                     BigInt   @id @default(autoincrement())
+  id                     Int      @id @default(autoincrement())
   user_id                String   @db.Uuid
   payment_account_number String   @unique
   payment_method_id      Int
@@ -33,9 +33,9 @@ model PaymentAccount {
 }
 
 model PaymentHistory {
-  id               BigInt               @id
-  account_id       BigInt
-  transaction_id   BigInt
+  id               Int                  @id @default(autoincrement())
+  account_id       Int
+  transaction_id   Int
   amount           Decimal
   transaction_type TransactionType
   status           PaymentHistoryStatus @default(PENDING)
@@ -46,8 +46,8 @@ model PaymentHistory {
 }
 
 model Transaction {
-  id               BigInt            @id
-  account_id       BigInt
+  id               Int               @id @default(autoincrement())
+  account_id       Int
   amount           Decimal
   currency         String
   transaction_type TransactionType
@@ -60,8 +60,8 @@ model Transaction {
 }
 
 model RecurringPayment {
-  id                BigInt                 @id
-  account_id        BigInt
+  id                Int                    @id @default(autoincrement())
+  account_id        Int
   amount            Decimal
   currency          String
   frequency         String
