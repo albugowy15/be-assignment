@@ -23,8 +23,8 @@ app
     }
     request.log.error(error.message);
     return reply
-      .code(500)
-      .send({ status: "error", error: "Internal server error" });
+      .code(error.statusCode || 500)
+      .send({ status: "error", error: error.message });
   })
   .setNotFoundHandler((_request, reply) => {
     return reply.code(404).send({ status: "error", error: "Route not found" });
