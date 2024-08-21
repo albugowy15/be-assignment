@@ -1,4 +1,4 @@
-import { Type, TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
+import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
 import { FastifyPluginAsync } from "fastify";
 import {
   AccountCreateSchemaReq,
@@ -22,14 +22,6 @@ const accountsController: FastifyPluginAsync = async (
         description: "Create new user payment account",
         tags: ["account"],
         body: AccountCreateSchemaReq,
-        response: {
-          201: Type.Object({
-            status: Type.String(),
-            data: Type.Object({
-              id: Type.Number(),
-            }),
-          }),
-        },
         security: [
           {
             bearerAuth: [],
@@ -51,12 +43,6 @@ const accountsController: FastifyPluginAsync = async (
         description: "Get transactions by account id",
         tags: ["account", "transaction"],
         params: AccountGetTransactionsByIdSchemaReq,
-        response: {
-          200: Type.Object({
-            status: Type.String(),
-            data: Type.Array(Type.Object({})),
-          }),
-        },
         security: [
           {
             bearerAuth: [],
@@ -78,12 +64,6 @@ const accountsController: FastifyPluginAsync = async (
       schema: {
         description: "Gel all authenticated user payment accounts",
         tags: ["account"],
-        response: {
-          200: Type.Object({
-            status: Type.String(),
-            data: Type.Array(Type.Object({})),
-          }),
-        },
         security: [
           {
             bearerAuth: [],
@@ -106,14 +86,6 @@ const accountsController: FastifyPluginAsync = async (
         tags: ["account"],
         params: AccountUpdateParamSchemaReq,
         body: AccountUpdateSchemaReq,
-        response: {
-          200: Type.Object({
-            status: Type.String(),
-            data: Type.Object({
-              id: Type.Number(),
-            }),
-          }),
-        },
         security: [
           {
             bearerAuth: [],
@@ -140,14 +112,6 @@ const accountsController: FastifyPluginAsync = async (
         tags: ["account"],
         body: AccountUpdateSchemaReq,
         params: AccountDeleteParamSchemaReq,
-        response: {
-          200: Type.Object({
-            status: Type.String(),
-            data: Type.Object({
-              id: Type.Number(),
-            }),
-          }),
-        },
         security: [
           {
             bearerAuth: [],

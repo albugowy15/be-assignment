@@ -1,4 +1,4 @@
-import { Type, TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
+import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
 import { FastifyPluginAsync } from "fastify";
 import { AuthLoginSchemaReq, AuthRegisterSchemaReq } from "../schemas/auth";
 
@@ -15,16 +15,6 @@ const authController: FastifyPluginAsync = async (
         description: "Login a user",
         tags: ["auth"],
         body: AuthLoginSchemaReq,
-        response: {
-          200: Type.Object({
-            status: Type.String(),
-            data: Type.Object({
-              id: Type.String(),
-              token: Type.String(),
-              refresh_token: Type.String(),
-            }),
-          }),
-        },
       },
     },
     async function (request, reply) {
@@ -47,14 +37,6 @@ const authController: FastifyPluginAsync = async (
         description: "Register a user",
         tags: ["auth"],
         body: AuthRegisterSchemaReq,
-        response: {
-          201: Type.Object({
-            status: Type.String(),
-            data: Type.Object({
-              id: Type.String(),
-            }),
-          }),
-        },
       },
     },
     async function (request, reply) {

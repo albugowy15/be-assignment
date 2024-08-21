@@ -1,4 +1,4 @@
-import { Type, TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
+import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
 import { FastifyPluginAsync } from "fastify";
 import {
   PaymentRecurringSchemaReq,
@@ -17,15 +17,6 @@ const paymentsController: FastifyPluginAsync = async (fastify, _opts) => {
         description: "Create send payment",
         tags: ["payment"],
         body: PaymentSendSchemaReq,
-        response: {
-          201: Type.Object({
-            status: Type.String(),
-            data: Type.Object({
-              transaction_id: Type.Number(),
-              payment_history_id: Type.Number(),
-            }),
-          }),
-        },
         security: [
           {
             bearerAuth: [],
@@ -50,15 +41,6 @@ const paymentsController: FastifyPluginAsync = async (fastify, _opts) => {
         description: "Create withdraw payment",
         tags: ["payment"],
         body: PaymentWithdrawSchemaReq,
-        response: {
-          201: Type.Object({
-            status: Type.String(),
-            data: Type.Object({
-              transaction_id: Type.Number(),
-              payment_history_id: Type.Number(),
-            }),
-          }),
-        },
         security: [
           {
             bearerAuth: [],
@@ -83,14 +65,6 @@ const paymentsController: FastifyPluginAsync = async (fastify, _opts) => {
         description: "Create recurring payment",
         tags: ["payment"],
         body: PaymentRecurringSchemaReq,
-        response: {
-          201: Type.Object({
-            status: Type.String(),
-            data: Type.Object({
-              id: Type.Number(),
-            }),
-          }),
-        },
       },
     },
     async function (request, reply) {

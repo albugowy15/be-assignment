@@ -1,4 +1,4 @@
-import { Type, TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
+import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
 import { FastifyPluginAsync } from "fastify";
 import { claimToken } from "../../utils/auth";
 
@@ -13,12 +13,6 @@ const transactionsController: FastifyPluginAsync = async (
       schema: {
         description: "Get all authenticated user transactions",
         tags: ["transaction"],
-        response: {
-          200: Type.Object({
-            status: Type.String(),
-            data: Type.Array(Type.Object({})),
-          }),
-        },
         security: [
           {
             bearerAuth: [],
